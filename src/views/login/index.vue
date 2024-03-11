@@ -7,8 +7,8 @@
         <!--登录表单-->
         <!-- :model是v-bind的简写 -->
         <el-form ref="form" :model="loginForm" :rules="loginRules">
-          <el-form-item prop="phone">
-            <el-input v-model="loginForm.phone" placeholder="请输入手机号" />
+          <el-form-item prop="mobile">
+            <el-input v-model="loginForm.mobile" placeholder="请输入手机号" />
           </el-form-item>
           <el-form-item prop="password">
             <el-input v-model="loginForm.password" show-password placeholder="请输入密码" />
@@ -19,23 +19,25 @@
           <el-form-item>
             <el-button type="primary" style="width: 350px;" @click="login">登录</el-button>
           </el-form-item>
+          <el-button type="primary" @click="test">测试axios封装</el-button>
         </el-form>
       </el-card>
     </div>
   </div>
 </template>
 <script>
+import request from '@/utils/request'
 export default {
   name: 'Login',
   data() {
     return {
       loginForm: { // 登录表单数据
-        phone: '',
-        password: '',
-        isAgree: false
+        mobile: process.env.NODE_ENV === 'development' ? '13800000002' : '',
+        password: process.env.NODE_ENV === 'development' ? 'hm#qd@23!' : '',
+        isAgree: process.env.NODE_ENV === 'development'
       },
       loginRules: { // 登录表单验证规则
-        phone: [{
+        mobile: [{
           required: true,
           message: '请输入手机号',
           trigger: 'blur' // 失去焦点时验证
@@ -76,14 +78,28 @@ export default {
   methods: {
     login() { // 登录
       // 1.表单验证
-      this.$refs.form.validate(valid => {
+      this.$refs.form.validate(async(valid) => {
         // valid验证结果
         if (valid) {
           // 验证成功
           console.log('校验通过')
           // 2.发送请求
+          await this.$store.dispatch('user/login', this.loginForm)
+          this.$router.push('/') // 跳转到首页
         }
       })
+    },
+    test() { // 测试axios封装
+      request({ // 调用封装的axios
+        url: '/sys/login',
+        method: 'post',
+        data: {
+          mobile: '13800000002',
+          password: 'hm#qd@23!'
+        }
+      }).then(res => { // res是响应结果
+        console.log(res)
+      }) // catch不写是因为封装的axios已经处理了错误信息
     }
   }
 }

@@ -1,5 +1,5 @@
 import { getToken, setToken, removeToken } from '@/utils/auth'
-import { NULL } from 'sass'
+import { login } from '@/api/user'
 
 const state = {
   token: getToken() // 从缓存中读取初始值
@@ -23,13 +23,9 @@ const actions = {
   async login(context, data) {
     // context上下文
     // data传入参数
-    const { username, password } = data
-    console.log(username, password)
-    // todo: 调用登录接口
-    // eslint-disable-next-line no-undef
-    const token = await login(data)
-    // 返回一个token 123456
-    context.commit('SET_TOKEN', token) // 将token存入vuex
+    // 调用登录接口
+    const token = await login(data) // res是一个promise对象
+    context.commit('SET_TOKEN', token) // 提交mutation
   }
 }
 
