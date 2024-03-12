@@ -1,6 +1,7 @@
 import axios from 'axios'
-import { MessageBox, Message } from 'element-ui'
+import { Message } from 'element-ui'
 import store from '@/store'
+import router from '@/router'
 
 // create an axios instance
 const service = axios.create({
@@ -53,27 +54,33 @@ service.interceptors.response.use(
         type: 'error',
         duration: 5 * 1000
       })
-
-      // 50008: Illegal token; 50012: Other clients logged in; 50014: Token expired;
-      if (res.code === 50008 || res.code === 50012 || res.code === 50014) {
-        // to re-login
-        MessageBox.confirm('You have been logged out, you can cancel to stay on this page, or log in again', 'Confirm logout', {
-          confirmButtonText: 'Re-Login',
-          cancelButtonText: 'Cancel',
-          type: 'warning'
-        }).then(() => {
-          store.dispatch('user/resetToken').then(() => {
-            location.reload()
-          })
-        })
-      }
       return Promise.reject(new Error(res.message || 'Error'))
     } else {
       return res.data // 响应结构体中的数据
     }
   },
-  error => {
-    console.log('err' + error) // for debug
+  async(error) => {
+    if (error.response.status === 401) {
+      // token过期
+      Message({
+        message: '登录过期，请重新登录',
+        type: 'warning',
+        duration: 5 * 1000
+      })
+      await store.dispatch('user/logout')
+      router.push('/login')
+      return Promise.reject(error) // 终止执行
+    } else if (error.response.status === 404) {
+      // 404
+      Message({
+        message: '请求资源不存在',
+        type: 'error',
+        duration: 5 * 1000
+      })
+      return Promise.reject(error) // 终止执行
+    }
+
+    console.log(error) // for debug
     Message({
       message: error.message,
       type: 'error',

@@ -19,14 +19,12 @@
           <el-form-item>
             <el-button type="primary" style="width: 350px;" @click="login">登录</el-button>
           </el-form-item>
-          <el-button type="primary" @click="test">测试axios封装</el-button>
         </el-form>
       </el-card>
     </div>
   </div>
 </template>
 <script>
-import request from '@/utils/request'
 export default {
   name: 'Login',
   data() {
@@ -88,18 +86,6 @@ export default {
           this.$router.push('/') // 跳转到首页
         }
       })
-    },
-    test() { // 测试axios封装
-      request({ // 调用封装的axios
-        url: '/sys/login',
-        method: 'post',
-        data: {
-          mobile: '13800000002',
-          password: 'hm#qd@23!'
-        }
-      }).then(res => { // res是响应结果
-        console.log(res)
-      }) // catch不写是因为封装的axios已经处理了错误信息
     }
   }
 }

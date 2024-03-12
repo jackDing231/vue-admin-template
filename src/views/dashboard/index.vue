@@ -1,6 +1,7 @@
 <template>
   <div class="dashboard-container">
     <div class="dashboard-text">name: {{ name }}</div>
+    <el-button @click="test">测试</el-button>
   </div>
 </template>
 
@@ -13,7 +14,14 @@ export default {
     ...mapGetters([
       'name'
     ])
+  },
+  methods: {
+    test() {
+      console.log('test')
+    }
+
   }
+
 }
 </script>
 
