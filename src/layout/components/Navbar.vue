@@ -36,13 +36,13 @@
     >
       <el-form ref="form" :model="passForm" :rules="passRules" label-width="90px">
         <el-form-item label="原密码" prop="oldPassword">
-          <el-input v-model="passForm.oldPassword" show-password />
+          <el-input v-model="passForm.oldPassword" show-password style="width: 80%;" />
         </el-form-item>
         <el-form-item label="新密码" prop="newPassword">
-          <el-input v-model="passForm.newPassword" show-password />
+          <el-input v-model="passForm.newPassword" show-password style="width: 80%;" />
         </el-form-item>
         <el-form-item label="确认密码" prop="confirmPassword">
-          <el-input v-model="passForm.confirmPassword" show-password />
+          <el-input v-model="passForm.confirmPassword" show-password style="width: 80%;" />
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">

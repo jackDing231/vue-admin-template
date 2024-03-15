@@ -15,6 +15,8 @@ import router from './router'
 import '@/icons' // icon
 import '@/permission' // permission control
 
+import 'default-passive-events' // 解决chrome浏览器下的警告：[Intervention] Unable to preventDefault inside passive event listener due to target being treated as passive. See https://www.chromestatus.com/features/5093566007214080
+
 /**
  * If you don't want to use mock-server
  * you want to use MockJs for mock api

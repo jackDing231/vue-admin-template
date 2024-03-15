@@ -17,13 +17,6 @@ export function getInfo(token) {
   })
 }
 
-export function logout() {
-  return request({
-    url: '/vue-admin-template/user/logout',
-    method: 'post'
-  })
-}
-
 // 修改密码
 export function updatePassword(data) {
   return request({
